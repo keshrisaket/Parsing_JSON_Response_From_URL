@@ -2,6 +2,7 @@ package com.example.parsingjsonresponsefromurl;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -211,18 +212,27 @@ public class JsonParser extends AsyncTask<Void, Void, String> {
 
     private Context context;
     Activity activity;
+
+    public ProgressDialog progressDialog;
     private static final String TAG = JsonParser.class.getSimpleName();
 
     public JsonParser(Context context,Activity activity) {
         this.context = context;
         this.activity=activity;
+        this.progressDialog=new ProgressDialog(this.context);
     }
 
-//    public  JsonParser(Activity activity,Context context){
-//////        this.activity=activity;
-//////        this.context=context;
-////////        this.progressDialog=new ProgressDialog(this.context);
-//////    }
+
+    @Override
+    protected  void onPreExecute(){
+        super.onPreExecute();
+        progressDialog.dismiss();
+        progressDialog.setMessage("Loading>>>");
+        progressDialog.show();
+    }
+
+
+
 
     @Override
     protected String doInBackground(Void... voids) {
@@ -263,6 +273,7 @@ public class JsonParser extends AsyncTask<Void, Void, String> {
                 String s = jsonObject.getString("name");
                 arrayList.add(s);
             }
+            progressDialog.dismiss();
 
             // Example: Update ListView with arrayList
 
